@@ -43,10 +43,11 @@ class Solution:
                 leaf.right = TreeNode(root.right.val)
                 merge(leaf.right, root.right)
             
+        # find all roots and leafs
         for root in trees:
             root_val_to_root[root.val] = root
-            leaves = get_leaf_nodes(root)
-            leaf_values.update((leaf.val for leaf in leaves))
+            leafs = get_leaf_nodes(root)
+            leaf_values.update((leaf.val for leaf in leafs))
         # deterine the root of final tree
         candidates = [k for (k,v) in root_val_to_root.items() if k not in leaf_values]
         if len(candidates) != 1:
@@ -55,10 +56,10 @@ class Solution:
         ftree_root = root_val_to_root.pop(candidates[0])
         # loop through the tree and merge other roots to current tree
         # get leaves of current tree
-        fleaves = get_leaf_nodes(ftree_root)
+        fleafs = get_leaf_nodes(ftree_root)
         cnt = 1 # merged tree
-        while fleaves and len(root_val_to_root):
-            leaf = fleaves.pop()
+        while fleafs and len(root_val_to_root):
+            leaf = fleafs.pop()
             root = root_val_to_root.get(leaf.val, None)
             if root:
                 # merge if exisits
@@ -66,7 +67,7 @@ class Solution:
                 root_val_to_root.pop(leaf.val)
                 # update fleaves
                 for l in get_leaf_nodes(leaf):
-                    fleaves.append(l)
+                    fleafs.append(l)
                 cnt += 1
                 
         print(cnt)
