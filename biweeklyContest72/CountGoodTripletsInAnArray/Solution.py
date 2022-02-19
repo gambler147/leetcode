@@ -7,7 +7,11 @@ class Solution:
             nums2[map2[v]] = i+1
             
         # now we only care about nums2's number of increasing triplets
-        # I use a binary indexed tree for O(logn) searching and updating        
+        # I use a binary indexed tree for O(logn) searching and updating     
+        # we update with a value of 1 for index nums[i], so when we do 
+        # a query with input number k, we are querying number of nodes
+        # that are filled with value 1 and sum up -- in other words, 
+        # number of integers between 1-k that appeared so far.
         def update(BIT, n, i, val):
             while i <= n:
                 BIT[i] += val
@@ -26,7 +30,8 @@ class Solution:
         right_great = [0] * (n+1)
         
         for i in range(n-1, -1, -1):
-            right_great[i] = (n-i-1) - query(BIT, nums2[i] - 1)
+            # number of elements we traversed - number of elements smaller (or equal) than nums2[i]
+            right_great[i] = (n-i-1) - query(BIT, nums2[i]) 
             update(BIT, n, nums2[i], 1)
         
         # clear BIT
@@ -34,7 +39,8 @@ class Solution:
             BIT[i] = 0
                 
         for i in range(n):
-            left_small[i] = query(BIT, nums2[i])
+            # number of elements smaller than nums2[i]
+            left_small[i] = query(BIT, nums2[i]-1)
             update(BIT, n, nums2[i], 1)
             
         res = 0
