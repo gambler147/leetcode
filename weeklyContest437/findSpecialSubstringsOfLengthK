@@ -1,0 +1,10 @@
+class Solution:
+    def hasSpecialSubstring(self, s: str, k: int) -> bool:
+        n = len(s)
+        for i in range(n-k+1):
+            sub = s[i:i+k]
+            if len(set(sub)) == 1 and (i == 0 or sub[0] != s[i-1]) and (i==n-k or sub[-1] != s[i+k]):
+                return True
+
+        return False
+
